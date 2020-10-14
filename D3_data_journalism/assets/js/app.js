@@ -13,5 +13,4 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     //   console.log("Hours:", data.hours);
     // });
 
-});
-//.catch(error => console.log(error));
+}).catch(error => console.log(error));
