@@ -15,7 +15,7 @@ var height = svgHeight - margin.top - margin.bottom;
 // Create an SVG wrapper, append an SVG group that will hold our chart,
 // and shift the latter by left and top margins.
 var svg = d3
-    .select(".chart")
+    .select("#scatter")
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight);
@@ -36,15 +36,15 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     riskData.forEach(data => {
         data.age = +data.age;
         data.income = +data.income;
-      });
-  
+    });
+
     // Create scale functions
     var xLinearScale = d3.scaleLinear()
-        .domain([20, d3.max(hairData, d => d.hair_length)])
+        .domain([20, d3.max(riskData, d => d.age)])
         .range([0, width]);
     
     var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(hairData, d => d.num_hits)])
+        .domain([0, d3.max(riskData, d => d.income)])
         .range([height, 0]);
     
     // Create axis functions
@@ -61,13 +61,13 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
 
     // Create Circles
     var circlesGroup = chartGroup.selectAll("circle")
-        .data(hairData)
+        .data(riskData)
         .join("circle")
-        .attr("cx", d => xLinearScale(d.hair_length))
-        .attr("cy", d => yLinearScale(d.num_hits))
+        .attr("cx", d => xLinearScale(d.age))
+        .attr("cy", d => yLinearScale(d.income))
         .attr("r", "15")
-        .attr("fill", "pink")
-        .attr("opacity", 0.5)
+        .attr("fill", "purple")
+        .attr("opacity", .5)
         .attr("stroke", "black")
         .attr("stroke-width", 1);
 
