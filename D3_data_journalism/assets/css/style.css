@@ -1,3 +1,9 @@
+.axis-text{
+  font-family: sans-serif;
+  font-size: 16pt;
+  text-anchor: middle;
+}
+
 .iframeContainer {
   padding: 20px;
   border: 1px solid #e3e3e3;

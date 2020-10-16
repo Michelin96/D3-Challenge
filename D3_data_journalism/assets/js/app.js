@@ -74,16 +74,16 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     // Create axes labels
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left + 40)
+        .attr("y", 0 - margin.left + 20)
         .attr("x", 0 - (height / 2))
-        .attr("dy", "1em")
-        .attr("class", "atext")
-        .text("Number of Billboard 100 Hits");
+        // .attr("dy", "1em")
+        .attr("class", "axis-text")
+        .text("Income");
 
     chartGroup.append("text")
         .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-        .attr("class", "atext")
-        .text("Hair Metal Band Hair Length (inches)");
+        .attr("class", "axis-text")
+        .text("Age");
 
 }).catch(error => console.log(error));
 
