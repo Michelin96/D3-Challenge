@@ -1,27 +1,27 @@
 // Set the margins
-var svgWidth = 960;
-var svgHeight = 500;
+let svgWidth = 960;
+let svgHeight = 500;
 
-var margin = {
+let margin = {
     top: 20,
     right: 40,
     bottom: 80,
     left: 100
 };
 
-var width = svgWidth - margin.left - margin.right;
-var height = svgHeight - margin.top - margin.bottom;
+let width = svgWidth - margin.left - margin.right;
+let height = svgHeight - margin.top - margin.bottom;
 
 // Create an SVG wrapper, append an SVG group that will hold our chart,
 // and shift the latter by left and top margins.
-var svg = d3
+let svg = d3
     .select("#scatter")
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight);
 
 // Append an SVG group
-var chartGroup = svg.append("g")
+let chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Get the data with a promise and fulfillment
@@ -33,21 +33,21 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     //Parse Data/Cast as numbers
     riskData.forEach(data => {
         data.age = +data.age;
-        data.income = +data.income;
+        data.income = +data.obesity;
     });
 
     // Create scale functions
-    var xLinearScale = d3.scaleLinear()
+    let xLinearScale = d3.scaleLinear()
         .domain([20, d3.max(riskData, d => d.age)])
         .range([0, width]);
     
-    var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(riskData, d => d.income)])
+    let yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(riskData, d => d.obesity)])
         .range([height, 0]);
     
     // Create axis functions
-    var bottomAxis = d3.axisBottom(xLinearScale);
-    var leftAxis = d3.axisLeft(yLinearScale);
+    let bottomAxis = d3.axisBottom(xLinearScale);
+    let leftAxis = d3.axisLeft(yLinearScale);
 
     // Append Axes to the chart
     chartGroup.append("g")
@@ -58,32 +58,42 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .call(leftAxis);
 
     // Create Circles
-    var circlesGroup = chartGroup.selectAll("circle")
+    let circlesGroup = chartGroup.selectAll("circle")
         .data(riskData)
         .join("circle")
         .attr("cx", d => xLinearScale(d.age))
-        .attr("cy", d => yLinearScale(d.income))
+        .attr("cy", d => yLinearScale(d.obesity))
         .attr("r", "15")
         .attr("fill", "purple")
         .attr("opacity", .5)
         .attr("stroke", "black")
-        .attr("stroke-width", 1);
-
-    // Add State Abbrevations to each scatter point
+        .attr("stroke-width", 1)
 
     // Create axes labels
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 20)
         .attr("x", 0 - (height / 2))
-        // .attr("dy", "1em")
+        .attr("dy", "1em")
         .attr("class", "axis-text")
-        .text("Income");
+        .text("Obesity");
 
     chartGroup.append("text")
         .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
         .attr("class", "axis-text")
         .text("Age");
+
+        // Add State Abbrevations to each scatter point
+        let labels = circlesGroup.selectAll("text")
+        .data(riskData)
+        .join("text")
+        .attr("id", "stateAbbr")
+        .attr("class", "stateText")
+        .attr("opacity", 0)
+        .attr("dy", "10px")
+        .attr("x", d => d.age)
+        .attr("y", d => d.obesity)
+        .text(d => d.abbr);
 
 }).catch(error => console.log(error));
 
