@@ -27,9 +27,6 @@ let chartGroup = svg.append("g")
 // Get the data with a promise and fulfillment
 d3.csv("assets/data/data.csv").then(function(riskData) {
 
-    // Make a list of State Abbrv
-    let stateAbbr = riskData.map(data => data.abbr);
-
     //Parse Data/Cast as numbers
     riskData.forEach(data => {
         data.age = +data.age;
@@ -49,6 +46,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     let bottomAxis = d3.axisBottom(xLinearScale);
     let leftAxis = d3.axisLeft(yLinearScale);
 
+
     // Append Axes to the chart
     chartGroup.append("g")
         .attr("transform", `translate(0, ${height})`)
@@ -56,18 +54,6 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
 
     chartGroup.append("g")
         .call(leftAxis);
-
-    // Create Circles
-    let circlesGroup = chartGroup.selectAll("circle")
-        .data(riskData)
-        .join("circle")
-        .attr("cx", d => xLinearScale(d.age))
-        .attr("cy", d => yLinearScale(d.obesity))
-        .attr("r", "15")
-        .attr("fill", "purple")
-        .attr("opacity", .5)
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
 
     // Create axes labels
     chartGroup.append("text")
@@ -83,18 +69,28 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("class", "axis-text")
         .text("Age");
 
-        // Add State Abbrevations to each scatter point
-        let labels = circlesGroup.selectAll("text")
+    // Create Circles
+    let circlesGroup = chartGroup.selectAll("circle")
+        .data(riskData)
+        .join("circle")
+        .attr("cx", d => xLinearScale(d.age))
+        .attr("cy", d => yLinearScale(d.obesity))
+        .attr("r", "15")
+        .attr("fill", "purple")
+        .attr("opacity", .5)
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        
+    // Create State Abbr Labels
+    const label = chartGroup.append("g")
+        .selectAll("circle")
         .data(riskData)
         .join("text")
-        .attr("id", "stateAbbr")
-        .attr("class", "stateText")
-        .attr("opacity", 0)
-        .attr("dy", "10px")
+        .attr("dy", "0.35em")
         .attr("x", d => d.age)
         .attr("y", d => d.obesity)
+        .attr("class", "stateText")
         .text(d => d.abbr);
 
 }).catch(error => console.log(error));
 
-   
