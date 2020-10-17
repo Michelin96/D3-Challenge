@@ -87,8 +87,8 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .data(riskData)
         .join("text")
         .attr("dy", "0.35em")
-        .attr("x", d => d.age)
-        .attr("y", d => d.obesity)
+        .attr("x", d => xLinearScale(d.age))
+        .attr("y", d => yLinearScale(d.obesity))
         .attr("class", "stateText")
         .text(d => d.abbr);
 
