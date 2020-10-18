@@ -136,7 +136,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .join("circle")
         .attr("cx", d => xLinearScale(d[selectXAxis]))
         .attr("cy", d => yLinearScale(d.healthcare))
-        .attr("r", "15")
+        .attr("r", "10")
         .attr("fill", "purple")
         .attr("opacity", .5)
         .attr("stroke", "black")
