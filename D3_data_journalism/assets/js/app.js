@@ -1,10 +1,10 @@
 // Set the margins
-let svgWidth = 960;
+let svgWidth = 1000;
 let svgHeight = 500;
 
 let margin = {
     top: 20,
-    right: 40,
+    right: 60,
     bottom: 150,
     left: 100
 };
@@ -31,18 +31,27 @@ let selectYAxis = "healthcare";
 // function used for updating x-scale var upon click on axis label
 function xScale(riskData, selectXAxis) {
     // create scales
-    var xLinearScale = d3.scaleLinear()
+    let xLinearScale = d3.scaleLinear()
       .domain([d3.min(riskData, d => d[selectXAxis]) * 0.8,
         d3.max(riskData, d => d[selectXAxis]) * 1.2
       ])
       .range([0, width]);
   
     return xLinearScale;
+  }
+
+// function used for updating y-scale var upon click on axis label
+function yScale(riskData, selectYAxis) {
+    // create scales
+   let yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(riskData, d => d[selectYAxis])])
+        .range([height, 0]);
   
+    return yLinearScale;
   }
 
   // function used for updating xAxis var upon click on axis label
-function renderAxes(newXScale, xAxis) {
+function renderAxisX(newXScale, xAxis) {
     let bottomAxis = d3.axisBottom(newXScale);
   
     xAxis.transition()
@@ -52,27 +61,39 @@ function renderAxes(newXScale, xAxis) {
     return xAxis;
 }
 
+function renderAxisY(newYScale, yAxis) {
+    let leftAxis = d3.axisLeft(newYScale);
+  
+    yAxis.transition()
+      .duration(1000)
+      .call(leftAxis);
+  
+    return yAxis;
+}
+
 // function used for updating circles group with a transition to
 // new circles
-function renderCircles(circlesGroup, newXScale, selectXAxis) {
+function renderCircles(circlesGroup, newXScale, newYScale, selectXAxis, selectYAxis) {
 
     circlesGroup.transition()
-      .duration(1000)
-      .attr("cx", d => newXScale(d[selectXAxis]));
-  
+        .duration(1000)
+        .attr("cx", d => newXScale(d[selectXAxis]))
+        .attr("cy", d => newYScale(d[selectYAxis]));
+
     return circlesGroup;
-  }
+}
 
 // function used for updating state text group with a transition to
 // new circles
-function renderText(stateLabel, newXScale, selectXAxis) {
+function renderText(stateLabel, newXScale, newYScale, selectXAxis, selectYAxis) {
 
     stateLabel.transition()
-      .duration(1000)
-      .attr("x", d => newXScale(d[selectXAxis]));
-  
+        .duration(1000)
+        .attr("x", d => newXScale(d[selectXAxis]))
+        .attr("y", d => newYScale(d[selectYAxis]));
+
     return stateLabel;
-  }
+}
 
 // Get the data with a promise and fulfillment
 d3.csv("assets/data/data.csv").then(function(riskData) {
@@ -90,12 +111,8 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     // xLinearScale function above csv import
     let xLinearScale = xScale(riskData, selectXAxis);
 
-    //  // yLinearScale function above csv import
-    // let yLinearScale = yScale(riskData, chosenYAxis);
-
-    let yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(riskData, d => d.healthcare)])
-        .range([height, 0]);
+    // yLinearScale function above csv import
+    let yLinearScale = yScale(riskData, selectYAxis);
     
     // Create axis functions
     let bottomAxis = d3.axisBottom(xLinearScale);
@@ -107,8 +124,8 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis);
     
-    // Append Y axis
-    chartGroup.append("g")
+    // Append Y axis to the chart
+    let yAxis = chartGroup.append("g")
         .call(leftAxis);
 
     // Create initial circles
@@ -134,71 +151,73 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("class", "stateText")
         .text(d => d.abbr);
 
-    let labelGroup =  chartGroup.append("g")
+    let xLabelGroup =  chartGroup.append("g")
         .attr("transform", `translate(${width / 2}, ${height + margin.top + 10})`)
-
-    let ageLabel = labelGroup.append("text")
         .attr("x", 0)
+        .classed("axis-text", true);
+    
+    let  yLabelGroup = chartGroup.append("g")
+        .attr("transform", "rotate(-90)")
+        // .attr("x", 0 - (height / 2))
+        // .attr("dy", "2em")
+        // .classed("axis-text", true)
+
+    let ageLabel = xLabelGroup.append("text")
         .attr("y", 20)
         .attr("value", "age") // value to grab for event listener
         .classed("inactive", true)
-        .classed("axis-text", true)
         .text("Age(Median)");
     
-    let incomeLabel = labelGroup.append("text")
-        .attr("x", 0)
+    let incomeLabel = xLabelGroup.append("text")
         .attr("y", 40)
         .attr("value", "income") // value to grab for event listener
         .classed("inactive", true)
-        .classed("axis-text", true)
         .text("Income(Median)");
     
-    let povertyLabel = labelGroup.append("text")
-        .attr("x", 0)
+    let povertyLabel = xLabelGroup.append("text")
         .attr("y", 60)
         .attr("value", "poverty") // value to grab for event listener
         .classed("active", true)
-        .classed("axis-text", true)
         .text("In Poverty(%)");
     
-    // Create Y axis label
-    chartGroup.append("text")
-        .attr("transform", "rotate(-90)")
+    // Create Y axis labels
+    let obesityLabel = yLabelGroup.append("text")
+        .attr("y", 0 - margin.left - 30)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "2em")
+        .classed("inactive", true)
+        .classed("axis-text", true)
+        .attr("value", "obesity") // value to grab for event listener
+        .text("Obese(%)");
+
+    let smokesLabel = yLabelGroup.append("text")
+        .attr("y", 0 - margin.left -5)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "2em")
+        .classed("inactive", true)
+        .classed("axis-text", true)
+        .attr("value", "smokes") // value to grab for event listener
+        .text("Smokes(%)");
+
+    let healthLabel = yLabelGroup.append("text")
         .attr("y", 0 - margin.left + 20)
         .attr("x", 0 - (height / 2))
         .attr("dy", "2em")
-        .attr("class", "axis-text")
+        .classed("active", true)
+        .classed("axis-text", true)
+        .attr("value", "healthcare") // value to grab for event listener
         .text("Lacks Healthcare(%)");
 
-        // x axis labels event listener
-    labelGroup.selectAll("text")
+     //Axis labels event listener
+    chartGroup.selectAll("text")
         .on("click", function() {
         // get value of selection
         let value = d3.select(this).attr("value");
-
-        // replaces chosenXAxis with value
-        selectXAxis = value;
-
-        // console.log(selectXAxis)
-
-        // functions here found above csv import
-        // updates x scale for new data
-        xLinearScale = xScale(riskData, selectXAxis);
-
-        // updates x axis with transition
-        xAxis = renderAxes(xLinearScale, xAxis);
-
-        // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, selectXAxis);
-
-        // updates start label with new x values
-        stateLabel = renderText(stateLabel, xLinearScale, selectXAxis);
         
-
-        // Changed selected axis to bold and others to inactive, "move" state text to new locations
-        switch (selectXAxis) {
-
+        // Changes selected axis to bold and others to inactive, theb define new axis values
+        switch (value) {
             case "age":
+                selectXAxis = value;
                 ageLabel
                     .classed("active", true)
                     .classed("inactive", false);
@@ -211,6 +230,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                 break;
 
             case "income":
+                selectXAxis = value;
                 incomeLabel
                     .classed("active", true)
                     .classed("inactive", false);
@@ -223,6 +243,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                 break;
 
             case "poverty":
+                selectXAxis = value;
                 povertyLabel
                     .classed("active", true)
                     .classed("inactive", false);
@@ -233,7 +254,61 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                     .classed("active", false)
                     .classed("inactive", true);
                 break;
+
+            case "obesity":
+                selectYAxis = value;
+                obesityLabel
+                    .classed("active", true)
+                    .classed("inactive", false);
+                smokesLabel
+                    .classed("active", false)
+                    .classed("inactive", true);
+                healthLabel
+                    .classed("active", false)
+                    .classed("inactive", true);
+                break;
+
+            case "smokes":
+                selectYAxis = value;
+                smokesLabel
+                    .classed("active", true)
+                    .classed("inactive", false);
+                healthLabel
+                    .classed("active", false)
+                    .classed("inactive", true);
+                obesityLabel
+                    .classed("active", false)
+                    .classed("inactive", true);
+            break;
+
+            case "healthcare":
+                selectYAxis = value;
+                healthLabel
+                    .classed("active", true)
+                    .classed("inactive", false);
+                obesityLabel
+                    .classed("active", false)
+                    .classed("inactive", true);
+                smokesLabel
+                    .classed("active", false)
+                    .classed("inactive", true);
+            break;
             }
+
+        // functions here found above csv import
+        // updates axis scales for new data
+        xLinearScale = xScale(riskData, selectXAxis);
+        yLinearScale = yScale(riskData, selectYAxis);
+
+        // updates axes with transition
+        xAxis = renderAxisX(xLinearScale, xAxis);
+        yAxis = renderAxisY(yLinearScale, yAxis);
+
+        // updates circles with new axis values
+        circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, selectXAxis, selectYAxis);
+        // updates state label with new axis values
+        stateLabel = renderText(stateLabel, xLinearScale, yLinearScale, selectXAxis, selectYAxis);
+
         // }
     });
 }).catch(error => console.log(error));
