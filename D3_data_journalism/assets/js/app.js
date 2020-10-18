@@ -44,7 +44,9 @@ function xScale(riskData, selectXAxis) {
 function yScale(riskData, selectYAxis) {
     // create scales
    let yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(riskData, d => d[selectYAxis])])
+        .domain([d3.min(riskData, d => d[selectYAxis]) * 0.8,
+        d3.max(riskData, d => d[selectYAxis]) * 1.2
+        ])
         .range([height, 0]);
   
     return yLinearScale;
@@ -309,6 +311,5 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         // updates state label with new axis values
         stateLabel = renderText(stateLabel, xLinearScale, yLinearScale, selectXAxis, selectYAxis);
 
-        // }
     });
 }).catch(error => console.log(error));
