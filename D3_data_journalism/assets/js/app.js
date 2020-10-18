@@ -111,6 +111,17 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("opacity", .5)
         .attr("stroke", "black")
         .attr("stroke-width", 1)
+    
+    // Create State Abbr Labels
+      const label = chartGroup.append("g")
+        .selectAll("circle")
+        .data(riskData)
+        .join("text")
+        .attr("dy", "0.35em")
+        .attr("x", d => xLinearScale(d[selectXAxis]))
+        .attr("y", d => yLinearScale(d.healthcare))
+        .attr("class", "stateText")
+        .text(d => d.abbr);
 
     let labelGroup =  chartGroup.append("g")
         .attr("transform", `translate(${width / 2}, ${height + margin.top + 10})`)
@@ -147,16 +158,6 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("dy", "2em")
         .attr("class", "axis-text")
         .text("Lacks Healthcare(%)");
-
-    // Create State Abbr Labels
-    circlesGroup.selectAll("circle")
-        .data(riskData)
-        .join("text")
-        .attr("dy", "0.35em")
-        .attr("x", d => xLinearScale(d.selectXAxis))
-        .attr("y", d => yLinearScale(d.healthcare))
-        .attr("class", "stateText")
-        .text(d => d.abbr);
    
         // x axis labels event listener
     labelGroup.selectAll("text")
