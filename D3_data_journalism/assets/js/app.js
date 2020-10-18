@@ -5,7 +5,7 @@ let svgHeight = 500;
 let margin = {
     top: 20,
     right: 40,
-    bottom: 80,
+    bottom: 150,
     left: 100
 };
 
@@ -43,7 +43,7 @@ function xScale(riskData, selectXAxis) {
 
   // function used for updating xAxis var upon click on axis label
 function renderAxes(newXScale, xAxis) {
-    var bottomAxis = d3.axisBottom(newXScale);
+    let bottomAxis = d3.axisBottom(newXScale);
   
     xAxis.transition()
       .duration(1000)
@@ -90,7 +90,6 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     let bottomAxis = d3.axisBottom(xLinearScale);
     let leftAxis = d3.axisLeft(yLinearScale);
 
-
     // Append X axis to the chart
     let xAxis = chartGroup.append("g")
         .classed("x-axis", true)
@@ -120,7 +119,8 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("x", 0)
         .attr("y", 20)
         .attr("value", "age") // value to grab for event listener
-        .classed("inactvie", true)
+        .classed("intactive", true)
+        // .classed("axis-text", true)
         .text("Age(Median)");
     
     let incomeLabel = labelGroup.append("text")
@@ -128,13 +128,15 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("y", 40)
         .attr("value", "income") // value to grab for event listener
         .classed("inactive", true)
+        // .classed("axis-text", true)
         .text("Income(Median)");
     
     let povertyLabel = labelGroup.append("text")
         .attr("x", 0)
-        .attr("y", 40)
+        .attr("y", 60)
         .attr("value", "poverty") // value to grab for event listener
         .classed("active", true)
+        // .classed("axis-text", true)
         .text("In Poverty(%)");
     
     // Create Y axis label
@@ -142,12 +144,12 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 20)
         .attr("x", 0 - (height / 2))
-        .attr("dy", "1em")
+        .attr("dy", "2em")
         .attr("class", "axis-text")
         .text("Lacks Healthcare(%)");
 
     // Create State Abbr Labels
-    const statelabel = chartGroup.append("g")
+    chartGroup.append("g")
         .selectAll("circle")
         .data(riskData)
         .join("text")
@@ -171,7 +173,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
 
         // functions here found above csv import
         // updates x scale for new data
-        xLinearScale = xScale(hairData, selectXAxis);
+        xLinearScale = xScale(riskData, selectXAxis);
 
         // updates x axis with transition
         xAxis = renderAxes(xLinearScale, xAxis);
@@ -186,7 +188,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                     .classed("active", true)
                     .classed("inactive", false);
                 incomeLabel
-                    .classed("active", fals)
+                    .classed("active", false)
                     .classed("inactive", true);
                 povertyLabel
                     .classed("active", false)
