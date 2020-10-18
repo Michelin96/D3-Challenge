@@ -119,7 +119,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("x", 0)
         .attr("y", 20)
         .attr("value", "age") // value to grab for event listener
-        .classed("intactive", true)
+        .classed("inactive", true)
         // .classed("axis-text", true)
         .text("Age(Median)");
     
@@ -149,7 +149,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .text("Lacks Healthcare(%)");
 
     // Create State Abbr Labels
-    chartGroup.append("g")
+    circlesGroup.append("g")
         .selectAll("circle")
         .data(riskData)
         .join("text")
@@ -164,7 +164,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .on("click", function() {
         // get value of selection
         let value = d3.select(this).attr("value");
-        if (value !== selectXAxis) {
+        // if (value !== selectXAxis) {
 
         // replaces chosenXAxis with value
         selectXAxis = value;
@@ -217,6 +217,6 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                     .classed("inactive", true);
                 break;
             }
-        }
+        // }
     });
 }).catch(error => console.log(error));
