@@ -63,6 +63,17 @@ function renderCircles(circlesGroup, newXScale, selectXAxis) {
     return circlesGroup;
   }
 
+// function used for updating state text group with a transition to
+// new circles
+function renderText(stateLabel, newXScale, selectXAxis) {
+
+    stateLabel.transition()
+      .duration(1000)
+      .attr("x", d => newXScale(d[selectXAxis]));
+  
+    return stateLabel;
+  }
+
 // Get the data with a promise and fulfillment
 d3.csv("assets/data/data.csv").then(function(riskData) {
 
@@ -113,7 +124,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("stroke-width", 1)
     
     // Create State Abbr Labels
-      const stateLabel = chartGroup.append("g")
+    let stateLabel = chartGroup.append("g")
         .selectAll("circle")
         .data(riskData)
         .join("text")
@@ -180,6 +191,10 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, selectXAxis);
 
+        // updates start label with new x values
+        stateLabel = renderText(stateLabel, xLinearScale, selectXAxis);
+        
+
         // Changed selected axis to bold and others to inactive, "move" state text to new locations
         switch (selectXAxis) {
 
@@ -187,9 +202,6 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                 ageLabel
                     .classed("active", true)
                     .classed("inactive", false);
-                stateLabel
-                    .attr("x", d => xLinearScale(d[selectXAxis]))
-                    .attr("y", d => yLinearScale(d.healthcare))
                 incomeLabel
                     .classed("active", false)
                     .classed("inactive", true);
@@ -202,9 +214,6 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                 incomeLabel
                     .classed("active", true)
                     .classed("inactive", false);
-                stateLabel
-                    .attr("x", d => xLinearScale(d[selectXAxis]))
-                    .attr("y", d => yLinearScale(d.healthcare))
                 ageLabel
                     .classed("active", false)
                     .classed("inactive", true);
@@ -217,9 +226,6 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                 povertyLabel
                     .classed("active", true)
                     .classed("inactive", false);
-                stateLabel
-                    .attr("x", d => xLinearScale(d[selectXAxis]))
-                    .attr("y", d => yLinearScale(d.healthcare))
                 incomeLabel
                     .classed("active", false)
                     .classed("inactive", true);
