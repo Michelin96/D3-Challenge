@@ -169,7 +169,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         // replaces chosenXAxis with value
         selectXAxis = value;
 
-        console.log(selectXAxis)
+        // console.log(selectXAxis)
 
         // functions here found above csv import
         // updates x scale for new data
@@ -181,12 +181,9 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, selectXAxis);
 
-        // Changed selected axis to bold and others to regular
+        // Changed selected axis to bold and others to inactive
         switch (selectXAxis) {
             case "age":
-                
-                console.log(`Made the switch ${selectXAxis}`);
-
                 ageLabel
                     .classed("active", true)
                     .classed("inactive", false);
