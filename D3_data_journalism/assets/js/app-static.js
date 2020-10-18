@@ -30,7 +30,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     //Parse Data/Cast as numbers
     riskData.forEach(data => {
         data.age = +data.age;
-        data.income = +data.obesity;
+        data.obesity = +data.obesity;
     });
 
     // Create scale functions
