@@ -24,13 +24,21 @@ let svg = d3
 let chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+//  Initial Axes Selections
+let selectXAxis = "poverty";
+let selectYAxis = "healthcare";
+
 // Get the data with a promise and fulfillment
 d3.csv("assets/data/data.csv").then(function(riskData) {
 
     //Parse Data/Cast as numbers
     riskData.forEach(data => {
-        data.age = +data.age;
-        data.income = +data.obesity;
+        data.age = +data.age; // X axis
+        data.income = +data.income; // X axis
+        data.poverty = +data.poverty; // X axis
+        data.healthcare = +data.healthcare; // Y axis
+        data.smokes = +data.smokes; // Y axis
+        data.obesity = +data.obesity; // Y axis
     });
 
     // Create scale functions
@@ -62,12 +70,12 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("x", 0 - (height / 2))
         .attr("dy", "1em")
         .attr("class", "axis-text")
-        .text("Obesity");
+        .text("Obesity(%)");
 
     chartGroup.append("text")
         .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
         .attr("class", "axis-text")
-        .text("Age");
+        .text("Age(Median)");
 
     // Create Circles
     let circlesGroup = chartGroup.selectAll("circle")
