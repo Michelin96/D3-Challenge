@@ -1,5 +1,5 @@
 // Set the margins
-let svgWidth = 1000;
+let svgWidth = 960;
 let svgHeight = 500;
 
 let margin = {
@@ -184,7 +184,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
     
     // Create Y axis labels
     let obesityLabel = yLabelGroup.append("text")
-        .attr("y", 0 - margin.left - 30)
+        .attr("y", 0 - margin.left - 25)
         .attr("x", 0 - (height / 2))
         .attr("dy", "2em")
         .classed("inactive", true)
@@ -193,7 +193,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .text("Obese(%)");
 
     let smokesLabel = yLabelGroup.append("text")
-        .attr("y", 0 - margin.left -5)
+        .attr("y", 0 - margin.left)
         .attr("x", 0 - (height / 2))
         .attr("dy", "2em")
         .classed("inactive", true)
@@ -202,7 +202,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .text("Smokes(%)");
 
     let healthLabel = yLabelGroup.append("text")
-        .attr("y", 0 - margin.left + 20)
+        .attr("y", 0 - margin.left + 25)
         .attr("x", 0 - (height / 2))
         .attr("dy", "2em")
         .classed("active", true)
