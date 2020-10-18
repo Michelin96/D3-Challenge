@@ -146,7 +146,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("x", 0)
         .attr("y", 60)
         .attr("value", "poverty") // value to grab for event listener
-        .classed("inactive", true)
+        .classed("active", true)
         .classed("axis-text", true)
         .text("In Poverty(%)");
     
@@ -158,7 +158,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("dy", "2em")
         .attr("class", "axis-text")
         .text("Lacks Healthcare(%)");
-   
+
         // x axis labels event listener
     labelGroup.selectAll("text")
         .on("click", function() {
@@ -169,7 +169,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         // replaces chosenXAxis with value
         selectXAxis = value;
 
-        // console.log(chosenXAxis)
+        console.log(selectXAxis)
 
         // functions here found above csv import
         // updates x scale for new data
@@ -183,7 +183,10 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
 
         // Changed selected axis to bold and others to regular
         switch (selectXAxis) {
-            case age:
+            case "age":
+                
+                console.log(`Made the switch ${selectXAxis}`);
+
                 ageLabel
                     .classed("active", true)
                     .classed("inactive", false);
@@ -194,7 +197,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                     .classed("active", false)
                     .classed("inactive", true);
                 break;
-            case income:
+            case "income":
                 incomeLabel
                     .classed("active", true)
                     .classed("inactive", false);
@@ -205,7 +208,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
                     .classed("active", false)
                     .classed("inactive", true);
                 break;
-            case poverty:
+            case "poverty":
                 povertyLabel
                     .classed("active", true)
                     .classed("inactive", false);
