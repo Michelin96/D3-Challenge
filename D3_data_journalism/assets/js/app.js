@@ -113,14 +113,14 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("stroke-width", 1)
 
     let labelGroup =  chartGroup.append("g")
-        .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+        .attr("transform", `translate(${width / 2}, ${height + margin.top + 10})`)
 
     let ageLabel = labelGroup.append("text")
         .attr("x", 0)
         .attr("y", 20)
         .attr("value", "age") // value to grab for event listener
         .classed("inactive", true)
-        // .classed("axis-text", true)
+        .classed("axis-text", true)
         .text("Age(Median)");
     
     let incomeLabel = labelGroup.append("text")
@@ -128,15 +128,15 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("y", 40)
         .attr("value", "income") // value to grab for event listener
         .classed("inactive", true)
-        // .classed("axis-text", true)
+        .classed("axis-text", true)
         .text("Income(Median)");
     
     let povertyLabel = labelGroup.append("text")
         .attr("x", 0)
         .attr("y", 60)
         .attr("value", "poverty") // value to grab for event listener
-        .classed("active", true)
-        // .classed("axis-text", true)
+        .classed("inactive", true)
+        .classed("axis-text", true)
         .text("In Poverty(%)");
     
     // Create Y axis label
@@ -149,8 +149,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .text("Lacks Healthcare(%)");
 
     // Create State Abbr Labels
-    circlesGroup.append("g")
-        .selectAll("circle")
+    circlesGroup.selectAll("circle")
         .data(riskData)
         .join("text")
         .attr("dy", "0.35em")
@@ -181,7 +180,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, selectXAxis);
 
-        // Changed selected axis to bold and others to reagular
+        // Changed selected axis to bold and others to regular
         switch (selectXAxis) {
             case age:
                 ageLabel
