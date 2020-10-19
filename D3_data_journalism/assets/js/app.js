@@ -98,7 +98,7 @@ function renderText(stateLabel, newXScale, newYScale, selectXAxis, selectYAxis) 
 }
 
 // Get the data with a promise and fulfillment
-d3.csv("assets/data/data.csv").then(function(riskData) {
+d3.csv("D3_data_journalism/assets/data/data.csv").then(function(riskData) {
 
     //Parse Data/Cast as numbers
     riskData.forEach(data => {
