@@ -58,7 +58,6 @@ function renderCircles(circlesGroup, newXScale, selectXAxis) {
     circlesGroup.transition()
       .duration(1000)
       .attr("cx", d => newXScale(d[selectXAxis]))
-    //   .attr("cy", d => newXScale(d.healthcare));
 
     return circlesGroup;
   }
@@ -89,9 +88,6 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
 
     // xLinearScale function above csv import
     let xLinearScale = xScale(riskData, selectXAxis);
-
-    //  // yLinearScale function above csv import
-    // let yLinearScale = yScale(riskData, chosenYAxis);
 
     let yLinearScale = d3.scaleLinear()
         .domain([0, d3.max(riskData, d => d.healthcare)])
