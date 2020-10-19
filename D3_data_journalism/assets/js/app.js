@@ -168,19 +168,19 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("y", 20)
         .attr("value", "age") // value to grab for event listener
         .classed("inactive", true)
-        .text("Age(Median)");
+        .text("Age (Median)");
     
     let incomeLabel = xLabelGroup.append("text")
         .attr("y", 40)
         .attr("value", "income") // value to grab for event listener
         .classed("inactive", true)
-        .text("Income(Median)");
+        .text("Income (Median)");
     
     let povertyLabel = xLabelGroup.append("text")
         .attr("y", 60)
         .attr("value", "poverty") // value to grab for event listener
         .classed("active", true)
-        .text("In Poverty(%)");
+        .text("In Poverty (%)");
     
     // Create Y axis labels
     let obesityLabel = yLabelGroup.append("text")
@@ -190,7 +190,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .classed("inactive", true)
         .classed("axis-text", true)
         .attr("value", "obesity") // value to grab for event listener
-        .text("Obese(%)");
+        .text("Obese (%)");
 
     let smokesLabel = yLabelGroup.append("text")
         .attr("y", 0 - margin.left)
@@ -199,7 +199,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .classed("inactive", true)
         .classed("axis-text", true)
         .attr("value", "smokes") // value to grab for event listener
-        .text("Smokes(%)");
+        .text("Smokes (%)");
 
     let healthLabel = yLabelGroup.append("text")
         .attr("y", 0 - margin.left + 25)
@@ -208,7 +208,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .classed("active", true)
         .classed("axis-text", true)
         .attr("value", "healthcare") // value to grab for event listener
-        .text("Lacks Healthcare(%)");
+        .text("Lacks Healthcare (%)");
 
      //Axis labels event listener
     chartGroup.selectAll("text")
@@ -216,7 +216,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         // get value of selection
         let value = d3.select(this).attr("value");
         
-        // Changes selected axis to bold and others to inactive, theb define new axis values
+        // Changes selected axis to bold and others to inactive, and defines new axis values
         switch (value) {
             case "age":
                 selectXAxis = value;
