@@ -8,3 +8,5 @@ Data from the U.S Census Bureau is used to compare various health riskes to spec
 By selecting one of the three data sets on either axis, this chart will compare the selections to each other. For example, selecting "Age (Median)" and "Smokes (%)" will create a scatter plot that compares the median age in a particular state with the percentage of those who smoke.
 
 ## Link to Interactive Chart
+
+<a href="https://michelin96.github.io/D3-Challenge/">Health Risks vs Demographics</a>
