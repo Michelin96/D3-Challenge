@@ -12,7 +12,7 @@
 }
 
 .inactive {
-  font-weight: lighter;
+  font-weight: initial;
   fill: #c9c9c9;
   transition: fill 0.3s ease-out;
   text-anchor: middle;
@@ -27,6 +27,7 @@
 .stateText {
   font-family: sans-serif;
   fill: #000;
+  font-size: 8pt;
   text-anchor: middle;
 }
 
