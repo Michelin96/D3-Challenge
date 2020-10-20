@@ -1,4 +1,4 @@
-# D3-challenge
+# D3-Challenge
 Create a D3 scatter plot with data point tags from a U.S. Census Bureau dataset.
 
 # Synopsis and Usage
